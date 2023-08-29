@@ -1,0 +1,463 @@
+{% extends "base.html" %} {% block title %}Sprzedaż Lokalu{% endblock %} {% block content
+%}
+
+
+
+
+<head>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+            integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./static/WpiszKW/styleCon.css">
+    <!-- Include jQuery Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Include jQuery Easing Plugin AFTER jQuery Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+    <script src="./static/WpiszKW/validateForm.js"></script>
+    <script src="./static/WpiszKW/FormKwNext.js"></script>
+    <script src="./static/WpiszKW/ObliczKontrolna.js"></script>
+    <script src="./static/WpiszKW/addZeros.js"></script>
+    <link rel="stylesheet" href="./static/styleChat.css">
+    <link rel="stylesheet" href="./static/downloadbuttom.css">
+    
+
+</head>
+
+
+<div class="message-box">
+    <h2>Chat Room: {{room}}</h2>
+    <h3>email: {{email}}</h3>
+    
+    <h5>Name: {{name}}</h5>
+    <h6>RodzajUmowy: {{RodzajUmowy}}</h6>
+
+    <div class="messages" id="messages"></div>
+    <div class="inputs">
+        <input type="text"
+               rows="3"
+               placeholder="Message"
+               name="message"
+               id="message" />
+        <button type="button" name="send" id="send-btn" onClick="sendMessage()">
+            Send
+        </button>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    var socketio = io();
+    var jestemVariable = false;
+
+    const messages = document.getElementById("messages");
+
+    const createMessage = (name, msg) => {
+        const content = `
+    <div class="text">
+        <span>
+            <strong>${name}</strong>: ${msg}
+        </span>
+        <span class="muted">
+            ${new Date().toLocaleString()}
+        </span>
+    </div>
+    `;
+
+    const containsSubstring = msg.includes("jestem");
+    console.log(`Message contains "jestem": ${containsSubstring}`);
+
+    if (containsSubstring) {
+    jestemVariable = true; // Set the global variable to true if the message contains "jestem"
+  }
+
+        messages.innerHTML += content;
+
+    };
+
+
+
+  
+
+    socketio.on("message", (data) => {
+        createMessage(data.name, data.message);
+    });
+
+    const sendMessage = () => {
+    if (validateForm()) {
+        const emailInput = document.getElementById("Email");
+        const input1 = document.getElementById("input1");
+        const input2 = document.getElementById("input2");
+        const input3 = document.getElementById("umowa");
+        
+        
+        const emailValue = "%" + emailInput.value + "%";
+        const input1Value = "%" + input1.value +"%";
+        const input2Value = "%" + input2.value + "%";
+        const input3Value = "%" + input3.value + "%";
+        
+        // Ensure none of the input values are empty before sending the message
+        if (emailInput.value === "" || input1Value === "" || input2Value === "" || input3Value === "") {
+            return;
+        }
+        
+        // Create a message that includes the values from all input elements
+        const message = `${emailValue}, ${input1Value}, ${input2Value}, ${input3Value}`;
+        
+        // Send the message via socket.io
+        socketio.emit("message", { data: message });
+    }
+};
+
+</script>
+
+
+
+
+
+
+{% for msg in messages %}
+<script type="text/javascript">
+  createMessage("{{msg.name}}", "{{msg.message}}");
+</script>
+{% endfor %}
+
+<input type="hidden" id="umowa" name="umowa" value= {{RodzajUmowy}} >
+
+
+<!-- multistep form -->
+<form id="msform" class="msform5">
+    <!-- progressbar -->
+    <ul id="progressbar">
+        <li class="active">Wpisz Dane</li>
+        <li>Połącz się z serwerem</li>
+        <li>Poczekaj i odbierz</li>
+    </ul>
+    <!-- fieldsets -->
+    <fieldset>
+        <h2 class="fs-title">Create your account</h2>
+        <h3 class="fs-subtitle">This is step 1</h3>
+
+
+        {% if user.is_authenticated %}
+
+        <input type="text" id="Email" name="email" placeholder="Email" value="{{email}}" readonly/>
+
+        {% else %}
+
+        <input type="text" id="Email" name="email" placeholder="Email" />
+
+        {% endif %}
+        
+
+
+
+
+        <input type="text" name="input1" id="input1" placeholder="Znak Wydziału Sądu" oninput="this.value = this.value.toUpperCase(); calculateKontrolna();" />
+        <input type="text" name="input2" id="input2" placeholder="Numer Księgi Wieczystej" oninput="calculateKontrolna();" onblur="addLeadingZeros();" />
+
+        <p id="result"></p>
+
+        <input type="button" name="next, create" class="next action-button" value="Next" onClick="sendMessage()">
+    </fieldset>
+
+    <fieldset>
+        <h2 class="fs-title">Social Profiles</h2>
+        <h3 id="step1-subtitle" class="fs-subtitle">Łączenie z systemem piszącym</h3>
+        <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div><br>
+
+        
+        <input type="button" name="next, create" class="next2 action-button" value="Next" style="display: none;" />
+    </fieldset>
+
+    <fieldset>
+        
+
+
+
+  
+
+        <div class="chat-container"  id="Chatdata">
+            <div class="divider"> </div>
+            <div class="phone_body">
+               <div class="chat" style="display: none;" id="chat1">
+                <img class="chat_avatar" src="./static/robo.avif">
+                 <div class="chat_info">
+                   <div class="contact_name">Patric Venturini </div>
+                   <div class="contact_msg">xddd?  </div>
+                 </div>
+                 <div class="chat_status">
+                   <div class="chat_date">9:20 PM</div>
+                   <div class="chat_new grad_pb"> New </div>
+                 </div>
+              </div>
+              
+              <div class="chat" style="display: none;" id="chat2">
+                <img class="chat_avatar" src="./static/robo.avif">
+                 <div class="chat_info">
+                   <div class="contact_name">Adriano Canofre </div>
+                   <div class="contact_msg">:pxdd?</div>
+                 </div>
+                 <div class="chat_status">
+                   <div class="chat_date">8:12 PM</div>
+                   <div class="chat_new grad_pb"> New </div>
+                 </div>
+              </div>
+              
+              <div class="chat" style="display: none;" id="chat3">
+                <img class="chat_avatar" src="./static/robo.avif">
+                 <div class="chat_info">
+                   <div class="contact_name">Patric Venturini </div>
+                   <div class="contact_msg">3?  </div>
+                 </div>
+                 <div class="chat_status">
+                   <div class="chat_date">Yesterday</div>
+                   <div class="chat_new grad_pb"> New </div>
+                 </div>
+              </div> 
+              <div class="chat" style="display: none;" id="chat4">
+                <img class="chat_avatar" src="./static/robo.avif">
+                 <div class="chat_info">
+                   <div class="contact_name">Adriano Canofre </div>
+                   <div class="contact_msg">4?</div>
+                 </div>
+                 <div class="chat_status">
+                   <div class="chat_date">Yesterday</div>
+                    
+                 </div>
+              </div>
+              
+              <div class="chat" style="display: none;" id="chat5">
+                <img class="chat_avatar" src="./static/robo.avif">
+                 <div class="chat_info">
+                   <div class="contact_name">Patric Venturini </div>
+                   <div class="contact_msg">5?  </div>
+                 </div>
+                 <div class="chat_status">
+                   <div class="chat_date">Yesterday</div>
+                    
+                 </div>
+              </div>
+                    <div class="chat" style="display: none;" id="chat6">
+                        <img class="chat_avatar" src="./static/robo.avif">
+
+                 <div class="chat_info">
+                   <div class="contact_name">Patric Venturini </div>
+                   <div class="contact_msg">6?  </div>
+                 </div>
+                 <div class="chat_status">
+                   <div class="chat_date">Yesterday</div>
+                    
+                 </div>
+              </div>
+                    <div class="chat" style="display: none;" id="chat7">
+                        <img class="chat_avatar" src="./static/robo.avif">
+                 <div class="chat_info">
+                   <div class="contact_name">Patric Venturini </div>
+                   <div class="contact_msg">7?  </div>
+                 </div>
+                 <div class="chat_status">
+                   <div class="chat_date">Yesterday</div>
+                    
+                 </div>
+              </div>
+                    <div class="chat" style="display: none;" id="chat8">
+                        <img class="chat_avatar" src="./static/robo.avif">
+                 <div class="chat_info">
+                   <div class="contact_name">Patric Venturini </div>
+                   <div class="contact_msg">8t?  </div>
+                 </div>
+                 <div class="chat_status">
+                   <div class="chat_date">Yesterday</div>
+                    
+                 </div>
+              </div>
+                    <div class="chat"style="display: none;" id="chat9">
+                        <img class="chat_avatar" src="./static/robo.avif">
+                 <div class="chat_info">
+                   <div class="contact_name">Patric Venturini </div>
+                   <div class="contact_msg">9?  </div>
+                 </div>
+                 <div class="chat_status">
+                   <div class="chat_date">Yesterday</div>
+                    
+                 </div>
+              </div>
+              <div class="chat"style="display: none;" id="chat10">
+                <img class="chat_avatar" src="./static/robo.avif">
+                 <div class="chat_info">
+                   <div class="contact_name">Patric Venturini </div>
+                   <div class="contact_msg">10?  </div>
+                 </div>
+                 <div class="chat_status">
+                   <div class="chat_date">Yesterday</div>
+                    
+                 </div>
+              </div>
+              
+              <div class="chat"style="display: none;" id="chat11">
+                <img class="chat_avatar" src="./static/robo.avif">
+                 <div class="chat_info">
+                   <div class="contact_name">Patric Venturini </div>
+                   <div class="contact_msg">11?  </div>
+                 </div>
+                 <div class="chat_status">
+                   <div class="chat_date">Yesterday</div>
+                    
+                 </div>
+              </div>
+            </div> <!-- phonebody -->
+            
+            <div class="phone_footer">
+              <div class="footer_divider grad_pb"> </div>
+            </div>
+          </div>
+          
+        
+        </div>
+
+    </fieldset>
+</form>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var nextButton = document.querySelector('.next');
+        var nextButton2 = document.querySelector('.next2');
+        var subtitle = document.getElementById('step1-subtitle');
+        var spinner = document.querySelector('.lds-spinner');
+        var timer;
+
+        // Store original content
+        var originalSubtitle = subtitle.textContent;
+        var originalSpinner = spinner.cloneNode(true); // Clone the spinner element
+
+        if (nextButton && subtitle && spinner) {
+            nextButton.addEventListener('click', function () {
+                // Assuming validateForm is a function that returns true or false
+                if (validateForm()) {
+                    clearTimeout(timer);
+                    timer = setTimeout(function () {
+                        var newElement = document.createElement('div');
+                        newElement.className = 'success-checkmark';
+                        
+                        // Check if the message contains "jestem"
+                         // Implement this function to check the message content
+                        
+                        if (jestemVariable === true) {
+                            newElement.innerHTML = `
+                            <div class="check-icon">
+                                  <span class="icon-line line-long"></span>
+                           <span class="icon-line line-tip"></span>
+                                   <div class="icon-circle"></div>
+                                <div class="icon-fix"></div>
+                            </div>`;
+                            subtitle.textContent = 'New Subtitle';
+                            nextButton2.click();
+                        } else {
+                            newElement.innerHTML = `
+                            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle class="checkmark_circle" cx="26" cy="26" r="25" fill="none"/>
+                                <path class="checkmark_check" fill="none" d="M14.1 14.1l23.8 23.8 m0,-23.8 l-23.8,23.8"/>
+                            </svg>`;
+                            subtitle.textContent = 'Połączenie Nieudane';
+                        }
+
+                        spinner.parentNode.replaceChild(newElement, spinner);
+
+                    }, 3000); // Changed to 5000 milliseconds (5 seconds)
+                }
+            });
+        }
+    });
+</script>
+
+<script>
+    var nextButton2 = document.querySelector('.next2');
+
+    nextButton2.addEventListener('click', function () {
+        // Function to remove the "display: none;" style for a chat div by its ID
+    function showChat(chatId) {
+        var chatDiv = document.getElementById(chatId);
+        chatDiv.style.removeProperty("display");
+		var elem = document.getElementById('Chatdata');
+		elem.scrollTop = elem.scrollHeight;
+    }
+    
+    // Set a timeout to remove the "display: none;" style for chat1 after 1 second (1000 milliseconds)
+    setTimeout(function() {
+        showChat("chat1");
+    }, 1000);
+
+    // Set a timeout to remove the "display: none;" style for chat2 after 2 seconds (2000 milliseconds)
+    setTimeout(function() {
+        showChat("chat2");
+    }, 2000);
+	
+	    setTimeout(function() {
+        showChat("chat3");
+    }, 3000);
+	
+	    setTimeout(function() {
+        showChat("chat4");
+    }, 4000);
+	
+	    setTimeout(function() {
+        showChat("chat5");
+    }, 5000);
+	
+		    setTimeout(function() {
+        showChat("chat6");
+    }, 6000);
+	
+		    setTimeout(function() {
+        showChat("chat7");
+    }, 7000);
+	
+		    setTimeout(function() {
+        showChat("chat8");
+    }, 8000);
+	
+		    setTimeout(function() {
+        showChat("chat9");
+    }, 9000);
+	
+		    setTimeout(function() {
+        showChat("chat10");
+    }, 10000);
+	
+		    setTimeout(function() {
+        showChat("chat11");
+    }, 11000);
+});
+</script>
+  
+
+<script>
+  // Function to replace the div with the button
+  function replaceDivWithButton() {
+      const divToReplace = document.querySelector('.footer_divider.grad_pb');
+
+      if (divToReplace) {
+          // Create a new button element
+          const button = document.createElement('button');
+          button.className = 'btn-grad';
+          button.textContent = 'Click Me';
+
+          // Replace the div with the button
+          divToReplace.replaceWith(button);
+      }
+  }
+
+  // Delay the execution of the function by 13 seconds (13000 milliseconds)
+  setTimeout(replaceDivWithButton, 13000);
+</script>
+
+
+
+ {% endblock %}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+
+
+
+ 
+
+
+    <link rel="stylesheet" href="./static/style.css">
+    <link rel="stylesheet" href="./static/style1.css">
+    <link rel="stylesheet" href="./static/style3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&amp;family=Quicksand:wght@300&amp;display=swap'>
+	
+
+
+    <title>{% block title %}Samopis{% endblock %}</title>
+
+
+</head>
+
+<style>
+    body {
+        background: radial-gradient(circle at 10% 20%, rgb(87, 152, 235) 0%, rgb(133, 222, 213) 67%);
+        background-size: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+</style>
+
+<body>
+
+    <ul class="nav-links" id="navbar">
+
+        <a href="/login">
+            <img src="./static/logo.png" width="70%" height="20%" style="margin-left: 25px;">
+        </a>
+
+
+
+
+        <div class="alert-container1">
+
+            {% with messages = get_flashed_messages(with_categories=true) %} {% if
+            messages %} {% for category, message in messages %} {% if category ==
+            'error' %}
+            <div class="alert alert-danger alter-dismissable fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% else %}
+            <div class="alert alert-success alter-dismissable fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %} {% endfor %} {% endif %} {% endwith %}
+        </div>
+            <div class="auth-links">
+                {% if user.is_authenticated %}
+            
+        <li class="center"> <a href="/logout" id="logout">Wyloguj</a></li>
+        
+        {% else %}
+
+        <li class="upward">  <a href="/login">Zaloguj</a></li>
+
+
+        <li class="forward">  <a href="/sign-up">Zarejestruj</a></li>
+
+        {% endif %}
+
+
+        </div>
+        </div>
+        </div>
+        </div>
+    </ul>
+    </ul>
+
+
+
+
+    <footer>
+        <div class="fotter-links" id="navbar">
+
+
+            <li class="upward"><a href="/logout">Regulamin</a></li>
+
+            <li class="upward">  <a href="/sign-up">Polityka Prywatności</a></li>
+
+            <li class="upward">  <a href="/login">Kontakt</a></li>
+
+
+
+        </div>
+
+    </footer>
+
+
+
+
+
+
+
+
+    {% block content %} {% endblock %}
+  
+
+    {% block javascript %}
+    <script type="text/javascript">
+        function deleteNote(noteId) {
+            fetch("/delete-note", {
+                method: "POST",
+                body: JSON.stringify({ noteId: noteId }),
+            }).then((_res) => {
+                window.location.href = "/";
+            });
+        }
+    </script>
+
+
+
+
+
+
+{% endblock %}
+</html>

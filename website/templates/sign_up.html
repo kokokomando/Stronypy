@@ -1,0 +1,71 @@
+﻿{% extends "base.html" %} {% block title %}Zarejestruj się{% endblock %} {% block
+content %}
+<head>
+<link rel="stylesheet" href="./static/style3.css">
+
+</head>
+
+<form method="POST">
+    <div class="route" id="welcome"></div>
+    <div id="app">
+        <div class="app-view">
+
+            <header class="app-header">
+                <h1>Zarejestruj się</h1>
+                <span class="app-subheading">
+                    Wypełnij poniższy formularz aby stworzyć konto.
+                </span>
+
+            </header>
+
+
+
+            <input type="email1" class="NewInput" id="email" name="email" required pattern=".*\.\w{2,}" placeholder="Adres e-mail" />
+
+
+
+
+            <input type="text"
+                   class="NewInput"
+                   id="firstName"
+                   name="firstName"
+                   placeholder="Twoje Imię" />
+
+
+            <input type="password"
+                   class="NewInput"
+                   id="password1"
+                   name="password1"
+                   placeholder="Hasło" />
+
+
+
+
+            <input type="password"
+                   class="NewInput"
+                   id="password2"
+                   name="password2"
+                   placeholder="Potwierdź Hasło" />
+
+
+
+            <a href="#welcome" class="btn app-button" onclick="document.querySelector('form').submit()">Zarejestuj</a>
+</form>
+
+
+
+<div class="app-register">
+    Masz już konto?  <a href="/login"> Zaloguj się</a>
+</div>
+
+
+
+ </div>
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}

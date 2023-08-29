@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block title %}Samopis Bez Logowania{% endblock %} {% block content
+%}
+
+<link rel="stylesheet" href="./static/style3.css">
+<link rel="stylesheet" href="./static/bootstrap.css">
+
+<div class="alert-container">
+    <div class="demo10">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="pricingTable10">
+                        <div class="pricingTable-header">
+                            <h3 class="heading">AKT<br> NOTARIALNY</h3>
+                            <span class="price-value">
+                                19zł
+                                <span class="month">/szt</span>
+                            </span>
+                        </div>
+                        <div class="pricing-content">
+                            <ul>
+
+                                <li>Akt Notarialny</li>
+                                <li>Płatność po odbiorze umowy</li>
+                                <li>Samodzielny Lokal</li>
+                                <li>Nieruchomość gruntowa</li>
+                            </ul>
+
+                            <!-- The form to submit the "RodzajUmowy" value -->
+                            <form action="/umowa" method="POST">
+                                <!-- Hidden input field with the name "RodzajUmowy" and value "sprzedaz" -->
+                                <input type="hidden" name="RodzajUmowy" value="przedwstepnaNot">
+                                <button type="submit" class="read">Rozpocznij</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="pricingTable10">
+                        <div class="pricingTable-header">
+                            <h3 class="heading">FORMA <br> PISEMNA</h3>
+                            <span class="price-value">
+                                <span class="currency"></span> 25zł
+                                <span class="month">/szt</span>
+                            </span>
+                        </div>
+                        <div class="pricing-content">
+                            <ul>
+
+                                <li>Forma Pisemna </li>
+
+
+                                <li>Płatność po odbiorze umowy</li>
+                                <li>Samodzielny Lokal</li>
+                                <li>Nieruchomość gruntowa</li>
+                            </ul>
+
+                            <!-- The form to submit the "RodzajUmowy" value -->
+                            <form action="/umowa" method="POST">
+                                <!-- Hidden input field with the name "RodzajUmowy" and value "sprzedaz" -->
+                                <input type="hidden" name="RodzajUmowy" value="przedwstepnaPis">
+                                <button type="submit" class="read">Rozpocznij</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

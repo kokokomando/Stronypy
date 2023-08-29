@@ -1,0 +1,130 @@
+{% extends "base.html" %} {% block title %}Samopis Bez Logowania{% endblock %} {% block content
+%}
+
+<link rel="stylesheet" href="./static/style3.css">
+<link rel="stylesheet" href="./static/bootstrap.css">
+
+<div class="alert-container">
+    <div class="demo10">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="pricingTable10">
+                        <div class="pricingTable-header">
+                            <h3 class="heading">Umowa<br>Sprzedaży</h3>
+                            <span class="price-value">
+                                19zł
+                                <span class="month">/szt</span>
+                            </span>
+                        </div>
+                        <div class="pricing-content">
+                            <ul>
+                                <li>Akt Notarialny</li>
+                                <li>Płatność po odbiorze umowy</li>
+                                <li>Samodzielny Lokal</li>
+                                <li>Nieruchomość gruntowa</li>
+                            </ul>
+
+                            <!-- The form to submit the "RodzajUmowy" value -->
+                            <form action="/umowa" method="POST">
+                                <!-- Hidden input field with the name "RodzajUmowy" and value "sprzedaz" -->
+                                <input type="hidden" name="RodzajUmowy" value="sprzedaz">
+                                <button type="submit" class="read">Rozpocznij</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="pricingTable10">
+                        <div class="pricingTable-header">
+                            <h3 class="heading">Umowa<br>Przedwstępna</h3>
+                            <span class="price-value">
+                                <span class="currency"></span> 25zł
+                                <span class="month">/szt</span>
+                            </span>
+                        </div>
+                        <div class="pricing-content">
+                            <ul>
+
+                                <li>Forma Pisemna</li>
+                                <li>Akt Notarialny</li>
+
+                                <li>Płatność po odbiorze umowy</li>
+                                <li>Samodzielny Lokal</li>
+                                <li>Nieruchomość gruntowa</li>
+                            </ul>
+                            <a href="/przedwstepna" class="read">Wybierz</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="pricingTable10">
+                        <div class="pricingTable-header">
+                            <h3 class="heading">Umowa<br>Darowizny</h3>
+                            <span class="price-value">
+                                <span class="currency"></span> 19zł
+                                <span class="month">/szt</span>
+                            </span>
+                        </div>
+                        <div class="pricing-content">
+                            <ul>
+
+                                <li>Akt Notarialny</li>
+                                <li>Pierszwa Grupa Podatkowa</li>
+                                <li>Trzecia Grupa Podatkowa</li>
+                                <li>Płatność po odbiorze umowy</li>
+                                <li>Samodzielny Lokal</li>
+                                <li>Nieruchomość gruntowa</li>
+                            </ul>
+                            <a href="/darowizna" class="read">Wybierz</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="pricingTable10">
+                        <div class="pricingTable-header">
+                            <h3 class="heading">Umowa<br>Najmu</h3>
+                            <span class="price-value">
+                                <span class="currency"></span> 29zł
+                                <span class="month">/szt</span>
+                            </span>
+                        </div>
+                        <div class="pricing-content">
+                            <ul>
+
+                                <li>Forma Pisemna</li>
+                                <li>Najem Okazjonalny</li>
+                                <li>Najem Zwykły</li>
+                                <li>Płatność po odbiorze umowy</li>
+                                <li>Samodzielny Lokal Mieszkalny</li>
+
+                            </ul>
+                            <a href="najem" class="read">Wybierz</a>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    {% endblock %}

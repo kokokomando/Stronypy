@@ -1,0 +1,95 @@
+{% extends "base.html" %} {% block title %}Samopis Bez Logowania{% endblock %} {% block content
+%}
+
+<link rel="stylesheet" href="./static/style3.css">
+<link rel="stylesheet" href="./static/bootstrap.css">
+
+<div class="alert-container">
+    <div class="demo10">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="pricingTable10">
+                        <div class="pricingTable-header">
+                            <h3 class="heading">Biuro Obsługi<br>Funduszy</h3>
+
+                        </div>
+                        <div class="pricing-content">
+                            <ul>
+                                <li>Formalne Zgromadzenie</li>
+                                <li>Nieformalne Zgromadzenie</li>
+                                <li>.....</li>
+                                <li>.....</li>
+                            </ul>
+
+                            <!-- The form to submit the "RodzajUmowy" value -->
+                            <form action="/wybierz" method="GET">
+                                <!-- Hidden input field with the name "RodzajUmowy" and value "sprzedaz" -->
+                                <input type="hidden" name="RodzajUmowy" value="sprzedaz">
+                                <button type="submit" class="read">Rozpocznij</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="pricingTable10">
+                        <div class="pricingTable-header">
+                            <h3 class="heading">Biuro Obsługi<br>Funduszy<br> Sekury.</h3>
+
+                        </div>
+                        <div class="pricing-content">
+                            <ul>
+
+                                <li>Formalne Zgromadzenie</li>
+                                <li>Nieformalne Zgromadzenie</li>
+                                <li>.....</li>
+                                <li>.....</li>
+
+                            </ul>
+                            <a href="/wybierz" class="read">Wybierz</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="pricingTable10">
+                        <div class="pricingTable-header">
+                            <h3 class="heading">Biuro Rozliczeń<br>Funduszy</h3>
+
+                        </div>
+                        <div class="pricing-content">
+                            <ul>
+
+                                <li>......</li>
+                                <li>.....</li>
+                                <li>.....</li>
+                                <li>.....</li>
+                            </ul>
+                            <a href="/wybierz" class="read">Wybierz</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    {% endblock %}
