@@ -19,6 +19,7 @@
             <header class="app-header">
                 <h1>Automatyczny Generator Dokumentów</h1>
 
+
                 <span class="app-subheading">
                     zaloguj się
 
@@ -26,11 +27,30 @@
                     rozpocznij bez logowania.
 
 
-
-
                     <!-- partial:index.partial.html -->
                     
                 </span>
+                <div class = "nologin_container">
+                    <a href="/wybierz1" class="link">
+
+                        <svg viewBox='0 0 200 200' width='300' height='1500' xmlns='http://www.w3.org/2000/svg' class="link__svg" aria-labelledby="link1-title link1-desc">
+                            <title id="link1-title"> </title>
+                            <desc id="link1-desc">A rotating link with text placed around a circle with an arrow inside</desc>
+                    
+                            <path id="link-circle" class="link__path" d="M 20, 100 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0" stroke="none" fill="none" />
+                    
+                            <path class="link__arrow" d="M 75 100 L 125 100 L 110 85 M 125 100 L 110 115" fill="none" />
+                    
+                            <text class="link__text">
+                                <textPath href="#link-circle" stroke="none">
+                                    START BEZ LOGOWANIA
+                                </textPath>
+                            </text>
+                        </svg>
+                    </a>
+                </div>
+
+
 
                     <!-- partial -->
                 
@@ -56,6 +76,7 @@
 
 <div class="app-register">
     Nie masz konta?  <a href="/sign-up"> Zarejestruj się</a>
+
 </div>
 
 
@@ -84,23 +105,7 @@
 </div>
 </div>
 
-<a href="/wybierz1" class="link">
 
-    <svg viewBox='0 0 200 200' width='300' height='1500' xmlns='http://www.w3.org/2000/svg' class="link__svg" aria-labelledby="link1-title link1-desc">
-        <title id="link1-title"> </title>
-        <desc id="link1-desc">A rotating link with text placed around a circle with an arrow inside</desc>
-
-        <path id="link-circle" class="link__path" d="M 20, 100 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0" stroke="none" fill="none" />
-
-        <path class="link__arrow" d="M 75 100 L 125 100 L 110 85 M 125 100 L 110 115" fill="none" />
-
-        <text class="link__text">
-            <textPath href="#link-circle" stroke="none">
-                START BEZ LOGOWANIA
-            </textPath>
-        </text>
-    </svg>
-</a>
 
 
 

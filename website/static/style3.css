@@ -196,7 +196,7 @@
   font-size: 4.8vh;
   padding: 0 6vh;
   position: absolute;
-  bottom: 10vh;
+  bottom: 8vh;
   font-weight: 400;
 }
 .app-button:focus {
@@ -562,6 +562,7 @@
   z-index: 0;
   overflow: visible;
   transform-origin: center 4vh;
+  pointer-events: none;
 }
 
 .svg-data {
@@ -670,8 +671,8 @@
 	display: inline-block;
 	font: 300 1.55rem/1.4 "Josefin Sans"; 
 	text-transform: uppercase;
-	letter-spacing: 0.1175em;
-	word-spacing: 0.3em;
+	letter-spacing: 0.2175em;
+	word-spacing: 1.3em;
 	text-decoration: none;
 
 	&__svg {

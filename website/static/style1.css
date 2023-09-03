@@ -18,16 +18,15 @@ html, body {
 }
 .link__svg {
     
-    height: 150%;
+    height: 100%;
+    max-width: 100px;
     transform-box: fill-box;
     fill: #2B3338;
     stroke: #2B3338;
     stroke-width: 0.05em;
     stroke-linecap: round;
     stroke-linejoin: round;
-    position: absolute;
-    margin: -64% 100%;
-    z-index: 9999;
+
 }
 .link__cloud {
   transform-origin: 50% 50%;

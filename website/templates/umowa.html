@@ -322,6 +322,13 @@
     </fieldset>
 </form>
 
+<form method="POST" action="/download_files">
+  <!-- Input for the folder_name field -->
+  <input type="hidden" name="folder_name" value={{room}}>
+  
+  <!-- Custom button -->
+  <input type="submit" class="btn-grad" value="Click Me">
+</form>
 
 
 
@@ -439,23 +446,43 @@
   
 
 <script>
-  // Function to replace the div with the button
+      var nextButton2 = document.querySelector('.next2');
+
+nextButton2.addEventListener('click', function () {
+  // Function to replace the div with the button form
   function replaceDivWithButton() {
       const divToReplace = document.querySelector('.footer_divider.grad_pb');
 
       if (divToReplace) {
-          // Create a new button element
-          const button = document.createElement('button');
-          button.className = 'btn-grad';
-          button.textContent = 'Click Me';
+          // Create a new form element
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = '/download_files';
 
-          // Replace the div with the button
-          divToReplace.replaceWith(button);
+          // Create an input element for folder_name
+          const folderNameInput = document.createElement('input');
+          folderNameInput.type = 'hidden';
+          folderNameInput.name = 'folder_name';
+          folderNameInput.value = '{{room}}';
+
+          // Create a button element
+          const button = document.createElement('button');
+          button.type = 'submit';
+          button.className = 'btn-grad';
+          button.value = 'Click Me';
+
+          // Append the input and button to the form
+          form.appendChild(folderNameInput);
+          form.appendChild(button);
+
+          // Replace the div with the form
+          divToReplace.replaceWith(form);
       }
   }
 
   // Delay the execution of the function by 13 seconds (13000 milliseconds)
   setTimeout(replaceDivWithButton, 13000);
+});
 </script>
 
 

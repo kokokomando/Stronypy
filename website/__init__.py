@@ -85,7 +85,7 @@ def create_app():
                 print("KONIEC")
     
         send({"name": name, "message": "has left the room"}, to=room)
-        send({"name": name, "message": f"has left the room {room}"}, to="4441")
+        send({"name": name, "message": f"has left the room ^{room}^"}, to="4441")
         print("Room codes after deleting a room:", list(rooms.keys()))
         print(f"{name} has left the room {room}")
 

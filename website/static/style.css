@@ -9,6 +9,12 @@
 }
 
 
+.nologin_container {
+    text-align: right;
+    top: -50;
+}
+
+
 .navbar-container {
     position: fixed;
     top: 0;

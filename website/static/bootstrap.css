@@ -604,10 +604,8 @@ pre code {
 .row {
   
   display: flex;
- 
- 
-  margin-right: -15px;
-  margin-left: -15px;
+  
+  gap: 10%; /* Add spacing between grid items */
 }
 
 .no-gutters {
@@ -629,8 +627,8 @@ pre code {
 .col-xl-auto {
   position: relative;
   width: 100%;
-  padding-right: 30px;
-  padding-left: 20px;
+  
+  
 }
 
 .col {
@@ -5075,7 +5073,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 .alert {
   position: relative;
   padding: 0.75rem 1.25rem;
-  margin-bottom: 1rem;
+  
   border: 1px solid transparent;
   border-radius: 0.25rem;
 }
@@ -5089,7 +5087,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .alert-dismissible {
-  padding-right: 4rem;
+  padding-right: 1rem;
 }
 
 .alert-dismissible .close {
@@ -8039,7 +8037,7 @@ button.bg-dark:focus {
 
 .mt-5,
 .my-5 {
-  margin-top: 3rem !important;
+  margin-top: 0.5rem !important;
 }
 
 .mr-5,

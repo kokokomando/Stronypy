@@ -1,5 +1,5 @@
 import mailbox
-from flask import Blueprint, render_template, request, flash, jsonify, session, redirect, url_for
+from flask import Blueprint, render_template, request, flash, jsonify, session, redirect, url_for, send_from_directory
 from flask_login import login_required, current_user
 from .models import Note, rooms
 from . import db
@@ -7,6 +7,7 @@ import json
 import random
 from string import ascii_uppercase
 from flask_socketio import SocketIO, send, join_room, leave_room
+import os
 
 views = Blueprint('views', __name__)
 
@@ -139,6 +140,97 @@ def room():
     return render_template("umowa.html",  RodzajUmowy = RodzajUmowy, messages=rooms[room]["messages"],  user=current_user, name=name, email=email, room=room)
 
 
+
+@views.route('/upload', methods=['POST'])
+def upload_file():
+    AUTH_KEY = '12345'
+    room = request.headers.get('room')
+    UPLOAD_FOLDER = f'uploads/{room}'
+    UPLOAD_FOLDER2 = f'website/uploads/{room}'
+    
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.makedirs(UPLOAD_FOLDER)
+
+    if not os.path.exists(UPLOAD_FOLDER2):
+        os.makedirs(UPLOAD_FOLDER2) # do naprawienia bo return filesend wykyrwa inaczej xddd i trzeba 2x ??
+
+
+    # Check if the authentication key is present in the POST request
+    auth_key = request.headers.get('auth')
+    
+    if auth_key != AUTH_KEY:
+        return jsonify({'error': 'Authentication failed'}), 401
+
+    # Check if a file is included in the POST request
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['file']
+
+    # Check if the file is empty
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    # Save the file to the uploads directory
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(file_path)
+
+    
+    file_path = os.path.join(UPLOAD_FOLDER2, file.filename)
+    file.save(file_path)
+
+    # Generate the URL for downloading the uploaded file
+    download_url = request.host_url + file_path
+
+    return jsonify({'message': 'File uploaded successfully', 'download_url': download_url}), 200
+
+
+
+@views.route('/download_files', methods=['POST'])
+def download_files():
+    # Get the folder name from the POST request
+    folder_name = request.form.get('folder_name')
+    UPLOAD_FOLDER = f'uploads/{folder_name}'
+    
+    print(folder_name)
+
+    if not folder_name:
+        return jsonify({'error': 'Folder name not provided in the POST request'}), 400
+
+    # Specify the base directory where the folders are located
+    base_directory = 'uploads'  # Adjust this path to your needs
+
+    # Construct the full path to the specified folder
+    folder_path = UPLOAD_FOLDER
+
+    # Check if the folder exists
+    if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
+        return jsonify({'error': 'Folder not found'}), 404
+
+    # List all files in the specified folder
+    files = os.listdir(folder_path)
+
+    # Check if there are any files in the folder
+    if not files:
+        return jsonify({'message': 'No files found in the specified folder'}), 200
+
+    # Create a ZIP file to contain all the files
+    zip_filename = f'{folder_name}_files.zip'
+    zip_filepath = os.path.join("website", folder_path, zip_filename)
+
+    # Create the ZIP file
+    import zipfile
+    with zipfile.ZipFile(zip_filepath, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for filename in files:
+            file_path = os.path.join(folder_path, filename)
+            zipf.write(file_path, os.path.basename(file_path))
+
+    
+    print("Wysyłam PLIK XDDDDD")    # Use Flask's send_from_directory function to send the ZIP file to the client
+    print(file_path)
+    print(zip_filename)
+    print(zip_filepath)
+    return send_from_directory(folder_path, zip_filename, as_attachment=True)
 
         
 
