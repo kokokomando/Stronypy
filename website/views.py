@@ -12,12 +12,17 @@ import os
 views = Blueprint('views', __name__)
 
 def generate_unique_code(length):
+    directory_path = './website/uploads'
     while True:
         code = ""
         for _ in range(length):
             code += random.choice(ascii_uppercase)
         
-        if code not in rooms:
+
+        if code not in rooms: # spradzanie czy już nie jest
+            break
+
+        if code not in os.listdir(directory_path):
             break
     
     return code
@@ -59,7 +64,9 @@ def delete_note():
 
 @views.route('/wybierz', methods=['GET'])
 def wybierz():
-   
+    
+            
+
     return render_template("chose.html", user=current_user)
 
 
@@ -69,7 +76,12 @@ def wybierz1():
    
     return render_template("chose copy.html", user=current_user)
 
+@views.route('/wzory', methods=['GET'])
+def wzory():
+    
+            
 
+    return render_template("wzory.html", user=current_user)
 
 
 @views.route('/przedwstepna', methods=['GET'])
@@ -145,11 +157,10 @@ def room():
 def upload_file():
     AUTH_KEY = '12345'
     room = request.headers.get('room')
-    UPLOAD_FOLDER = f'uploads/{room}'
+   
     UPLOAD_FOLDER2 = f'website/uploads/{room}'
     
-    if not os.path.exists(UPLOAD_FOLDER):
-        os.makedirs(UPLOAD_FOLDER)
+ 
 
     if not os.path.exists(UPLOAD_FOLDER2):
         os.makedirs(UPLOAD_FOLDER2) # do naprawienia bo return filesend wykyrwa inaczej xddd i trzeba 2x ??
@@ -172,8 +183,7 @@ def upload_file():
         return jsonify({'error': 'No selected file'}), 400
 
     # Save the file to the uploads directory
-    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
-    file.save(file_path)
+
 
     
     file_path = os.path.join(UPLOAD_FOLDER2, file.filename)
@@ -186,52 +196,54 @@ def upload_file():
 
 
 
-@views.route('/download_files', methods=['POST'])
+@views.route('/download_files', methods=['POST', 'GET'])
 def download_files():
-    # Get the folder name from the POST request
-    folder_name = request.form.get('folder_name')
-    UPLOAD_FOLDER = f'uploads/{folder_name}'
-    
-    print(folder_name)
 
-    if not folder_name:
-        return jsonify({'error': 'Folder name not provided in the POST request'}), 400
+    if request.method == "POST":
+        # Get the folder name from the POST request
+        folder_name = request.form.get('folder_name')
+        UPLOAD_FOLDER = f'uploads/{folder_name}'
+        
+        print(folder_name)
 
-    # Specify the base directory where the folders are located
-    base_directory = 'uploads'  # Adjust this path to your needs
+        if not folder_name:
+            return jsonify({'error': 'Folder name not provided in the POST request'}), 400
 
-    # Construct the full path to the specified folder
-    folder_path = UPLOAD_FOLDER
+        # Specify the base directory where the folders are located
+        base_directory = 'uploads'  # Adjust this path to your needs
 
-    # Check if the folder exists
-    if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
-        return jsonify({'error': 'Folder not found'}), 404
+        # Construct the full path to the specified folder
+        folder_path = os.path.join("website", UPLOAD_FOLDER)
 
-    # List all files in the specified folder
-    files = os.listdir(folder_path)
+        # Check if the folder exists
+        if not os.path.exists(folder_path) or not os.path.isdir(folder_path):
+            return jsonify({'error': 'Folder not found'}), 404
 
-    # Check if there are any files in the folder
-    if not files:
-        return jsonify({'message': 'No files found in the specified folder'}), 200
+        # List all files in the specified folder
+        files = os.listdir(folder_path)
 
-    # Create a ZIP file to contain all the files
-    zip_filename = f'{folder_name}_files.zip'
-    zip_filepath = os.path.join("website", folder_path, zip_filename)
+        # Check if there are any files in the folder
 
-    # Create the ZIP file
-    import zipfile
-    with zipfile.ZipFile(zip_filepath, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        for filename in files:
-            file_path = os.path.join(folder_path, filename)
-            zipf.write(file_path, os.path.basename(file_path))
 
-    
-    print("Wysyłam PLIK XDDDDD")    # Use Flask's send_from_directory function to send the ZIP file to the client
-    print(file_path)
-    print(zip_filename)
-    print(zip_filepath)
-    return send_from_directory(folder_path, zip_filename, as_attachment=True)
+        # Create a ZIP file to contain all the files
+        zip_filename = f'{folder_name}_files.zip'
+        zip_filepath = os.path.join("website", UPLOAD_FOLDER, zip_filename)
 
+        # Create the ZIP file
+        import zipfile
+        with zipfile.ZipFile(zip_filepath, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            for filename in files:
+                file_path = os.path.join(folder_path, filename)
+                zipf.write(zip_filepath, os.path.basename(file_path))
+
+        
+        print("Wysyłam PLIK XDDDDD")    # Use Flask's send_from_directory function to send the ZIP file to the client
+        print(file_path)
+        print(zip_filename)
+        print(zip_filepath)
+        return send_from_directory(UPLOAD_FOLDER, zip_filename, as_attachment=True)
+    else:
+        return send_from_directory("./static/", "firmowy.dotx", as_attachment=True)
         
 
 

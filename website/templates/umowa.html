@@ -68,12 +68,37 @@
     `;
 
     const containsSubstring = msg.includes("jestem");
-    console.log(`Message contains "jestem": ${containsSubstring}`);
+    const containsLeft = msg.includes("Left");
+    const containsKolejka = msg.includes("KOLEJKA");
+
+    var alertElement = document.querySelector('.alert-warning[style="display: none;"]');
+
+  
 
     if (containsSubstring) {
     jestemVariable = true; // Set the global variable to true if the message contains "jestem"
   }
 
+  if (containsLeft) {
+    // Remove the 'style' attribute to display the element
+    alertElement.removeAttribute('style');
+    
+  }
+
+
+  if (containsKolejka) {
+  const match = msg.match(/KOLEJKA.*?\((\d+)\)/); // Extract the number in parentheses
+  const numberInParentheses = match[1]; // Get the captured number
+  console.log("Found number in parentheses:", numberInParentheses);
+  
+  if (numberInParentheses > 0) {
+    var chatDiv = document.getElementById("chat1");
+        chatDiv.style.removeProperty("display");
+        var contactNameElement = chatDiv.querySelector(".contact_nameKolejka");
+        
+    contactNameElement.textContent = "Twoja pozycja w kolejce to:"  + numberInParentheses ;
+  }
+}
         messages.innerHTML += content;
 
     };
@@ -184,16 +209,17 @@
             <div class="divider"> </div>
             <div class="phone_body">
                <div class="chat" style="display: none;" id="chat1">
-                <img class="chat_avatar" src="./static/robo.avif">
+                <img class="chat_avatar" style="background: transparent;" src="./static/queue (2).png">
                  <div class="chat_info">
-                   <div class="contact_name">Patric Venturini </div>
-                   <div class="contact_msg">xddd?  </div>
+                   <div class="contact_nameKolejka">Twoja pozycja w kolejce to: </div>
+                   <div class="contact_msg">zaczekaj, a pisanie rozpocznie się samo</div>
                  </div>
                  <div class="chat_status">
                    <div class="chat_date">9:20 PM</div>
                    <div class="chat_new grad_pb"> New </div>
                  </div>
               </div>
+
               
               <div class="chat" style="display: none;" id="chat2">
                 <img class="chat_avatar" src="./static/robo.avif">
@@ -299,7 +325,7 @@
               </div>
               
               <div class="chat"style="display: none;" id="chat11">
-                <img class="chat_avatar" src="./static/robo.avif">
+                <img class="chat_avatar" src="./static/queue.png">
                  <div class="chat_info">
                    <div class="contact_name">Patric Venturini </div>
                    <div class="contact_msg">11?  </div>

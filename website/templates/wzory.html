@@ -1,0 +1,71 @@
+{% extends "base.html" %} {% block title %}Samopis Bez Logowania{% endblock %} {% block content
+    %}
+    
+    <head>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="./static/akordeon.js"></script>
+    <link rel="stylesheet" href="./static/akordeon.css">
+    </head>
+
+
+
+
+    <!-- Contenedor -->
+    <ul id="accordion" class="accordion">
+      <li>
+        <div class="link" style="height: 4rem; width: 100%;"><i class="fa fa-database"></i>Wycena Funduszu<i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li><a href="#">Photoshop</a></li>
+          <li><a href="#">HTML</a></li>
+          <li><a href="#">CSS</a></li>
+        </ul>
+      </li>
+      <li>
+        <div class="link" style="height: 4rem; width: 100%;"><i class="fa fa-code"></i>Wykup Certyfikatów<i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li><a href="#">Javascript</a></li>
+          <li><a href="#">jQuery</a></li>
+          <li><a href="#">Ruby</a></li>
+        </ul>
+      </li>
+      <li>
+        <div class="link" style="height: 4rem"><i class="fa fa-mobile"></i>Zmiana Statutu<i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li><a href="#">Tablet</a></li>
+          <li><a href="#">Mobile</a></li>
+          <li><a href="#">Desktop</a></li>
+        </ul>
+      </li>
+      <li>
+        <div class="link" style="height: 4rem"><i class="fa fa-globe"></i>Umowa Pożyczki<i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li><a href="#">Google</a></li>
+          <li><a href="#">Bing</a></li>
+          <li><a href="#">Yahoo</a></li>
+        </ul>
+      </li>
+      <li>
+        <div class="link" style="height: 4rem"><i class="fa fa-globe"></i>Weksle<i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li><a href="#">Google</a></li>
+          <li><a href="#">Bing</a></li>
+          <li><a href="#">Yahoo</a></li>
+        </ul>
+      </li>
+
+
+      <li>
+        <div class="link" style="height: 4rem"><i class="fa fa-globe"></i>Obligacje<i class="fa fa-chevron-down"></i></div>
+        <ul class="submenu">
+          <li><a href="#">Google</a></li>
+          <li><a href="#">Bing</a></li>
+          <li><a href="#">Yahoo</a></li>
+        </ul>
+      </li>
+    </ul>
+
+
+
+
+    {% endblock %}

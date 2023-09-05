@@ -10,8 +10,8 @@
 
 
  
-    <link rel="stylesheet" href="./static/bootstrap.css">
-
+    
+    
     <link rel="stylesheet" href="./static/styleNotification.css">
     <link rel="stylesheet" href="./static/style.css">
     <link rel="stylesheet" href="./static/style1.css">
@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&amp;family=Quicksand:wght@300&amp;display=swap'>
+    
+    
 	
 
 
@@ -40,19 +42,14 @@
 <body>
 
     <ul class="nav-links" id="navbar">
+      
+      
+      <a href="/login" style="max-width: 272px; margin-right: auto;">
+        <img src="./static/logo.png" width="90%" height="20%" style="margin-left: 25px;">
+    </a>  
+    
 
-        <a href="/login">
-            <img src="./static/logo.png" width="70%" height="20%" style="margin-left: 25px;">
-        </a>
-
-
-        
-        
-        
-        
-
-
-
+    <div class="alert-container">
             <a>
 
                 
@@ -108,36 +105,44 @@
             {% with messages = get_flashed_messages(with_categories=true) %} {% if
             messages %} {% for category, message in messages %} {% if category ==
             'error' %}
+            <div class="alert-container">
             <div class="alert fade alert-simple alert-danger alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show" role="alert" data-brk-library="component__alert" role="alert">
                 {{ message }}
 
             </div>
+          </div>
             {% else %}
+            <div class="alert-container">
             <div class="alert alert-success alter-dismissable fade show" role="alert">
                 {{ message }}
 
             </div>
+          </div>
             {% endif %} {% endfor %} {% endif %} {% endwith %}
         </div>
             <div class="auth-links">
+              <a href="/download_files" style="max-width: 25px; ">
+                <img src="./static/firmowy.png" width="100%" height="100%" style="margin-left: -30px;">
+            </a>  
                 {% if user.is_authenticated %}
-            
+                <li class="upward" style="font-size: 20px;"> zalogowano jako: {{ current_user.first_name}}</li>
         <li class="center"> <a href="/logout" id="logout">Wyloguj</a></li>
         
         {% else %}
 
-        <li class="upward">  <a href="/login">Zaloguj</a></li>
+        <li class="forward">  <a href="/login">Zaloguj</a></li>
 
 
         <li class="forward">  <a href="/sign-up">Zarejestruj</a></li>
 
         {% endif %}
+    
 
-
         </div>
         </div>
         </div>
         </div>
+      </div>
     </ul>
     </ul>
 
@@ -145,14 +150,14 @@
 
 
     <footer>
-        <div class="fotter-links" id="navbar">
+        <div class="fotter-links" id="navbar" >
 
 
-            <li class="upward"><a href="/logout">Regulamin</a></li>
+            <li class="upward" style="position:relative"><a href="/logout">Regulamin</a></li>
 
-            <li class="upward">  <a href="/sign-up">Polityka Prywatności</a></li>
+            <li class="upward" style="position:relative">  <a href="/sign-up">Polityka Prywatności</a></li>
 
-            <li class="upward">  <a href="/login">Kontakt</a></li>
+            <li class="upward" style="position:relative">  <a href="/login">Kontakt</a></li>
 
 
 
@@ -171,16 +176,6 @@
   
 
     {% block javascript %}
-    <script type="text/javascript">
-        function deleteNote(noteId) {
-            fetch("/delete-note", {
-                method: "POST",
-                body: JSON.stringify({ noteId: noteId }),
-            }).then((_res) => {
-                window.location.href = "/";
-            });
-        }
-    </script>
 
 
 

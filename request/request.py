@@ -9,6 +9,7 @@ import threading
 sio = socketio.Client()
 
 
+
 #lista rozpoznawanych spraw DICTONARÓW z danymi
 
 list_of_dicts = []
@@ -66,10 +67,16 @@ def connection():
                 with list_lock:
                     list_of_dicts.append(dynamic_dict)
                     
+                    message3 = {"name": "2_Bartek", "message": f"KOLEJKA:(({len(list_of_dicts)}))#{room}#"}
+                    sio.emit('message', message3)
+                    
+
+                    
+                    
                 data_added.set()
 
                 
-                for index, item in enumerate(list_of_dicts):
+                for index, item in enumerate(list_of_dicts): # robienie indexu
                     room_name = item['room']
                     print(f"Index {index}: {room_name}")
                     
@@ -138,10 +145,21 @@ def process(sio):
                 if item.get('room') == room:
                     list_of_dicts.remove(item)
                     
+                if list_of_dicts:   # wiadomość do wszystkich którzy sa w kolejce
+                    for item in list_of_dicts:
+                          room = item.get('room')
+                          message3 = {"name": "2_Bartek", "message": f"KOLEJKA:(({len(list_of_dicts)}))#{room}#"}
+                          
+                          sio.emit('message', message3)
+                        
+                    
+                    
+                    
             if not list_of_dicts:
                 print("Brak Zadań, clearing the event.")
                 data_added.clear()  # Clear the event if the list is empty          
         busy_event.clear()
+        
 
 
 
